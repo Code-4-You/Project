@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Transactions Dashboard</h1>
+            <div class="controls">
+                <label for="month">Select Month:</label>
+                <select id="month">
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March" selected>March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+                <input type="text" id="search" placeholder="Search transactions">
+            </div>
+        </header>
+
+        <section id="transactions">
+            <h2>Transactions Table</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Sold Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="transaction-table-body">
+                    <tr>
+                        <td>001</td>
+                        <td>Product A</td>
+                        <td>High-quality product</td>
+                        <td>Electronics</td>
+                        <td>$150</td>
+                        <td>Sold</td>
+                        <td>2023-03-15</td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>Product B</td>
+                        <td>Affordable and durable</td>
+                        <td>Furniture</td>
+                        <td>$250</td>
+                        <td>Not Sold</td>
+                        <td>2023-03-12</td>
+                    </tr>
+                    <tr>
+                        <td>003</td>
+                        <td>Product C</td>
+                        <td>Latest model</td>
+                        <td>Appliances</td>
+                        <td>$300</td>
+                        <td>Sold</td>
+                        <td>2023-03-10</td>
+                    </tr>
+                    <tr>
+                        <td>004</td>
+                        <td>Product D</td>
+                        <td>Best in class</td>
+                        <td>Accessories</td>
+                        <td>$75</td>
+                        <td>Not Sold</td>
+                        <td>2023-03-08</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button id="prev">Previous</button>
+                <span id="current-page">Page 1</span>
+                <button id="next">Next</button>
+            </div>
+        </section>
+
+        <section id="statistics">
+            <h2>Transactions Statistics for <span id="selected-month">March</span></h2>
+            <div class="stats">
+                <div class="stat-box">
+                    <h3>Total Sale Amount</h3>
+                    <p id="total-sale">$450</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Total Sold Items</h3>
+                    <p id="total-sold">2</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Total Not Sold Items</h3>
+                    <p id="total-not-sold">2</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="charts">
+            <h2>Transactions Bar Chart for <span id="bar-chart-month">March</span></h2>
+            <div class="chart-container">
+                <canvas id="bar-chart"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const barChartCanvas = document.getElementById("bar-chart");
+            const barChartMonth = document.getElementById("bar-chart-month");
+
+            // Dummy data for bar chart
+            const barChartData = {
+                labels: ["0-100", "101-200", "201-300", "301-400", "401-500", "501-600", "601-700", "701-800", "801-900", "901+"],
+                datasets: [
+                    {
+                        label: "# of Items",
+                        data: [5, 8, 10, 2, 6, 4, 3, 1, 0, 2],
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1,
+                    },
+                ],
+            };
+
+            const barChartOptions = {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Price Range",
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Number of Items",
+                        },
+                        beginAtZero: true,
+                    },
+                },
+            };
+
+            // Initialize Bar Chart
+            const barChart = new Chart(barChartCanvas, {
+                type: "bar",
+                data: barChartData,
+                options: barChartOptions,
+            });
+
+            const monthDropdown = document.getElementById("month");
+            const selectedMonth = document.getElementById("selected-month");
+
+            monthDropdown.addEventListener("change", () => {
+                const newMonth = monthDropdown.value;
+                selectedMonth.textContent = newMonth;
+                barChartMonth.textContent = newMonth;
+
+                // Update chart with new data if applicable
+                // Here, you could fetch and update the `barChartData` based on the selected month
+            });
+        });
+    </script>
+</body>
+</html>
